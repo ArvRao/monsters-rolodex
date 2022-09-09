@@ -1,26 +1,43 @@
-import React from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface MyProps {
+  msg?: string;
+}
+
+interface MyState {
+  count: number; // like this
+};
+
+class App extends React.Component<MyProps, MyState> {
+
+  state: MyState = {
+    count: 10
+  }
+
+
+  render() {
+    const {msg} = this.props
+    const {count} = this.state
+
+    return (
+      <div>
+        Message: {msg ? msg : "No message"} <br />
+        Count: {count} <br />
+        <button onClick={() => {
+          this.setState((state, props) => {
+            console.log("Previous state: ", state.count);
+            return {count: 22};
+          }, () => {
+            // destructure again for re-rendering, runs after state change is applied
+            const {count} = this.state
+            console.log("Count", count)
+          })
+        }}>Change count</button>
+      </div>
+    );
+  }
 }
 
 export default App;
