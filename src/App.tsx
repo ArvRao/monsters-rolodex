@@ -6,6 +6,30 @@ interface MyProps {
   msg?: string;
 }
 
+interface IfaceUser {
+    id: number,
+    name: string,
+    username: string,
+    email: string,
+    address: {
+      street: string,
+      suite: string,
+      city: string,
+      zipcode: string,
+      geo: {
+        lat: string,
+        lng: string
+      },
+      phone: string,
+      website: string
+    },
+    company: {
+      name: string,
+      catchPhrase: string,
+      bs: string
+    }
+}
+
 interface MyState {
   count: number;
   monstersList:
@@ -14,6 +38,7 @@ interface MyState {
       name: string;
       age: number
     } []
+  usersApi: IfaceUser[]
 };
 
 class App extends React.Component<MyProps, MyState> {
@@ -30,16 +55,33 @@ class App extends React.Component<MyProps, MyState> {
         name: "Monster2",
         age: 20
       }
-    ]
+    ],
+    usersApi: []
+  }
+
+  componentDidMount(): void {
+    console.log("componentdid mount executed");
+      fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) => response.json())
+      .then((users: IfaceUser[]) => this.setState(
+        () => {
+          return {
+            usersApi: users
+          }
+        }, () => {
+          console.log("Updated monsters: API:", this.state.usersApi);
+        }
+      ));
   }
 
 
   render() {
+    console.log("render method after constructor");
     const {msg} = this.props
     const {count} = this.state
 
     return (
-      <div>
+      <div className='text-align: center'>
         Message: {msg ? msg : "No message"} <br />
         Count: {count} <br />
         <button onClick={() => {
@@ -54,10 +96,10 @@ class App extends React.Component<MyProps, MyState> {
         }}>Change count</button> <br />
         <h1>List of monsters: </h1>
         {/* <p>{this.state.monster1.name}</p> */}
-        {this.state.monstersList.map((monster) => {
+        {this.state.usersApi.map((monster) => {
           return (
           <div key={monster.id}>
-           <p>{monster.name} is {monster.age} years old.</p>
+           <p>{monster.name} lives in {monster.address.city} city.</p>
           </div>
           )
         })}
