@@ -39,7 +39,7 @@ class App extends React.Component<MyProps, MyState> {
     const {count} = this.state
 
     return (
-      <>
+      <div>
         Message: {msg ? msg : "No message"} <br />
         Count: {count} <br />
         <button onClick={() => {
@@ -61,7 +61,7 @@ class App extends React.Component<MyProps, MyState> {
           </div>
           )
         })}
-      </>
+      </div>
     );
   }
 }
