@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 
 interface MyProps {
@@ -39,6 +38,7 @@ interface MyState {
       age: number
     } []
   usersApi: IfaceUser[]
+  searchField: string;
 };
 
 class App extends React.Component<MyProps, MyState> {
@@ -56,11 +56,11 @@ class App extends React.Component<MyProps, MyState> {
         age: 20
       }
     ],
-    usersApi: []
+    usersApi: [], 
+    searchField: ""
   }
 
   componentDidMount(): void {
-    console.log("componentdid mount executed");
       fetch("https://jsonplaceholder.typicode.com/users")
       .then((response) => response.json())
       .then((users: IfaceUser[]) => this.setState(
@@ -74,14 +74,26 @@ class App extends React.Component<MyProps, MyState> {
       ));
   }
 
+  onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchField = event.target.value.toLocaleLowerCase();
+    this.setState(() => {
+      return { searchField };
+    })
+  }
+
 
   render() {
-    console.log("render method after constructor");
     const {msg} = this.props
-    const {count} = this.state
+    const {count, monstersList, usersApi, searchField} = this.state
+    const {onSearchChange} = this
+
+    const filteredMonsters = usersApi.filter((monster) => {
+      return monster.name.toLocaleLowerCase().includes(searchField);
+    })
 
     return (
-      <div className='text-align: center'>
+      <div className='App'>
+       
         Message: {msg ? msg : "No message"} <br />
         Count: {count} <br />
         <button onClick={() => {
@@ -94,9 +106,10 @@ class App extends React.Component<MyProps, MyState> {
             console.log("Count", count)
           })
         }}>Change count</button> <br />
+         <input className='search-box' type="search" placeholder="search monsters" onChange={onSearchChange} /> <br />
         <h1>List of monsters: </h1>
         {/* <p>{this.state.monster1.name}</p> */}
-        {this.state.usersApi.map((monster) => {
+        {filteredMonsters.map((monster) => {
           return (
           <div key={monster.id}>
            <p>{monster.name} lives in {monster.address.city} city.</p>
