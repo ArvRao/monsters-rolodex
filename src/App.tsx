@@ -29,6 +29,29 @@ interface IfaceUser {
     }
 }
 
+interface IAddress {
+    street?: string,
+    suite?: string,
+    city: string,
+    zipcode?: string,
+    geo?: {
+      lat: string,
+      lng: string
+    },
+    phone: string,
+    website?: string
+}
+
+interface ICar {
+  carName: string,
+  modelType: "Sedan" | "HatchBack" | "SUV"
+  company?: {
+    name: string
+    email: string
+    address: IAddress
+  }
+}
+
 interface MyState {
   count: number;
   monstersList:
@@ -39,6 +62,7 @@ interface MyState {
     } []
   usersApi: IfaceUser[]
   searchField: string;
+  myCar: ICar
 };
 
 class App extends React.Component<MyProps, MyState> {
@@ -57,7 +81,19 @@ class App extends React.Component<MyProps, MyState> {
       }
     ],
     usersApi: [], 
-    searchField: ""
+    searchField: "",
+    myCar: {
+      carName: "Model S",
+      modelType: "Sedan",
+      company: {
+        address: {
+          city: "LA",
+          phone: "813134"
+        },
+        email: "nasa@bro.com",
+        name: "NASA"
+      }
+    }
   }
 
   componentDidMount(): void {
@@ -66,10 +102,15 @@ class App extends React.Component<MyProps, MyState> {
       .then((users: IfaceUser[]) => this.setState(
         () => {
           return {
-            usersApi: users
+            usersApi: users,
+            myCar: {
+              ...this.state.myCar,
+              carName: "Model X"
+            }
           }
         }, () => {
           console.log("Updated monsters: API:", this.state.usersApi);
+          console.log("Updated my car", this.state.myCar);
         }
       ));
   }
@@ -84,7 +125,7 @@ class App extends React.Component<MyProps, MyState> {
 
   render() {
     const {msg} = this.props
-    const {count, monstersList, usersApi, searchField} = this.state
+    const {count, monstersList, usersApi, searchField } = this.state
     const {onSearchChange} = this
 
     const filteredMonsters = usersApi.filter((monster) => {
