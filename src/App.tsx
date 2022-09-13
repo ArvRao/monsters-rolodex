@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import CardList from "../src/components/card-list/card-list.component"
 
 interface MyProps {
   msg?: string;
@@ -66,6 +67,9 @@ interface MyState {
 };
 
 class App extends React.Component<MyProps, MyState> {
+  props: MyProps = {
+    msg: "Hello world"
+  }
   state: MyState = {
     count: 10,
     monstersList: [
@@ -125,6 +129,7 @@ class App extends React.Component<MyProps, MyState> {
 
   render() {
     const {msg} = this.props
+    console.log(msg);
     const {count, monstersList, usersApi, searchField } = this.state
     const {onSearchChange} = this
 
@@ -146,10 +151,10 @@ class App extends React.Component<MyProps, MyState> {
             const {count} = this.state
             console.log("Count", count)
           })
-        }}>Change count</button> <br />
+        }}>Change count</button> <br /> <br />
+        <CardList />
          <input className='search-box' type="search" placeholder="search monsters" onChange={onSearchChange} /> <br />
         <h1>List of monsters: </h1>
-        {/* <p>{this.state.monster1.name}</p> */}
         {filteredMonsters.map((monster) => {
           return (
           <div key={monster.id}>
