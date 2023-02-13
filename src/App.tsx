@@ -34,19 +34,24 @@ interface MyState {
 };
 
 class App extends React.Component<{}, MyState> {
+
+  state: MyState = {
+    monsters: [],
+    searchField: ''
+  }
+    
   componentDidMount(): void {
       fetch("https://jsonplaceholder.typicode.com/users")
       .then((response) => response.json())
       .then((users: IfaceUser[]) =>
       {
-        console.log("users: ", users)
         this.setState(
           () => {
             return {
               monsters: users
             }
           }, () => {
-            console.log("users data:", this.state.monsters)
+            console.log(this.state.monsters)
           }
         )
       }
@@ -54,8 +59,32 @@ class App extends React.Component<{}, MyState> {
   }
 
   render(): React.ReactNode {
+    const divStyle = {
+      fontFamily: "Arial",      
+    };
+
+    const OnChangeEvent = (event: any) => {
+      const searchString = event.target.value.toLocaleLowerCase();
+      const filteredMonsters = this.state.monsters.filter((monster) => {
+        return monster.name.toLocaleLowerCase().includes(searchString)
+      })
+      console.log(filteredMonsters)
+      this.setState(() => {
+        return {
+          monsters: filteredMonsters
+        }
+      })
+    }
     return (
-     <></>
+      <div className='App'>
+        <h1 style={divStyle}>List of monsters</h1>
+        <input type="search" className='search-box' placeholder='search monsters' 
+        onChange={OnChangeEvent}/>
+        {this.state.monsters.map((monster) => {
+        return (
+          <h1 key={monster.id}>{monster.name}</h1>
+        )
+      })}</div>
     )
   }
 }
