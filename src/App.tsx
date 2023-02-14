@@ -34,12 +34,11 @@ interface MyState {
 };
 
 class App extends React.Component<{}, MyState> {
-
   state: MyState = {
     monsters: [],
     searchField: ''
   }
-    
+  
   componentDidMount(): void {
       fetch("https://jsonplaceholder.typicode.com/users")
       .then((response) => response.json())
@@ -50,8 +49,6 @@ class App extends React.Component<{}, MyState> {
             return {
               monsters: users
             }
-          }, () => {
-            console.log(this.state.monsters)
           }
         )
       }
@@ -65,10 +62,10 @@ class App extends React.Component<{}, MyState> {
 
     const OnChangeEvent = (event: any) => {
       const searchString = event.target.value.toLocaleLowerCase();
+      //! we're filtering off of currently filtered list of monsters, avoid mutating original array 
       const filteredMonsters = this.state.monsters.filter((monster) => {
         return monster.name.toLocaleLowerCase().includes(searchString)
       })
-      console.log(filteredMonsters)
       this.setState(() => {
         return {
           monsters: filteredMonsters
