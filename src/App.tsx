@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
-
+import CardList from './components/card-list/card-list.component';
+import SearchBox from './components/search-box/search-box.component';
 interface IAddress {
   street?: string,
   suite?: string,
@@ -19,6 +20,7 @@ name: string,
 catchPhrase?: string,
 bs: string
 }
+
 interface IfaceUser {
     id: number,
     name: string,
@@ -60,16 +62,13 @@ class App extends React.Component<{}, MyState> {
       fontFamily: "Arial",      
     };
 
+    const filteredMonsters = this.state.monsters.filter((monster) => {
+      return monster.name.toLocaleLowerCase().includes(this.state.searchField)
+    })
     const OnChangeEvent = (event: any) => {
-      const searchString = event.target.value.toLocaleLowerCase();
-      //! we're filtering off of currently filtered list of monsters, avoid mutating original array 
-      const filteredMonsters = this.state.monsters.filter((monster) => {
-        return monster.name.toLocaleLowerCase().includes(searchString)
-      })
+      const searchField = event.target.value.toLocaleLowerCase();
       this.setState(() => {
-        return {
-          monsters: filteredMonsters
-        }
+        return { searchField }
       })
     }
     return (
@@ -77,11 +76,9 @@ class App extends React.Component<{}, MyState> {
         <h1 style={divStyle}>List of monsters</h1>
         <input type="search" className='search-box' placeholder='search monsters' 
         onChange={OnChangeEvent}/>
-        {this.state.monsters.map((monster) => {
-        return (
-          <h1 key={monster.id}>{monster.name}</h1>
-        )
-      })}</div>
+        <SearchBox />
+       <CardList monstersProp={filteredMonsters}/>
+      </div>
     )
   }
 }
