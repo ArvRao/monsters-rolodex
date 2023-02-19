@@ -58,10 +58,6 @@ class App extends React.Component<{}, MyState> {
   }
 
   render(): React.ReactNode {
-    const divStyle = {
-      fontFamily: "Arial",      
-    };
-
     const filteredMonsters = this.state.monsters.filter((monster) => {
       return monster.name.toLocaleLowerCase().includes(this.state.searchField)
     })
@@ -73,7 +69,7 @@ class App extends React.Component<{}, MyState> {
     }
     return (
       <div className='App'>
-        <h1 style={divStyle}>List of monsters</h1>
+        <h1 className="app-title">Monsters rolodex</h1>
         <SearchBox className="monsters-search-box" onChangeHandler={OnChangeEvent} placeHolder="search monsters" />
        <CardList monstersProp={filteredMonsters}/>
       </div>
