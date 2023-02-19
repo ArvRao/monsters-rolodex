@@ -74,9 +74,7 @@ class App extends React.Component<{}, MyState> {
     return (
       <div className='App'>
         <h1 style={divStyle}>List of monsters</h1>
-        <input type="search" className='search-box' placeholder='search monsters' 
-        onChange={OnChangeEvent}/>
-        <SearchBox />
+        <SearchBox className="monsters-search-box" onChangeHandler={OnChangeEvent} placeHolder="search monsters" />
        <CardList monstersProp={filteredMonsters}/>
       </div>
     )
