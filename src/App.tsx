@@ -61,7 +61,7 @@ class App extends React.Component<{}, MyState> {
     const filteredMonsters = this.state.monsters.filter((monster) => {
       return monster.name.toLocaleLowerCase().includes(this.state.searchField)
     })
-    const OnChangeEvent = (event: any) => {
+    const OnChangeEvent = (event: React.ChangeEvent<HTMLInputElement>) => {
       const searchField = event.target.value.toLocaleLowerCase();
       this.setState(() => {
         return { searchField }
