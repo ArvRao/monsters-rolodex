@@ -1,19 +1,10 @@
-import { Component } from "react";
 import Card from "../card/card.component";
 import './card-list.styles.css'
 interface MyProps {
     monstersProp: any
 }
 
-interface MyState {
-    filteredMonsters: []
-}
-class CardList extends Component<MyProps, MyState> {
-    state: MyState = {
-        filteredMonsters: []
-    }
-    render() {
-        const { monstersProp } = this.props
+const CardList = ({monstersProp}: MyProps) => {
         return (
             <div className="card-list">
                 {monstersProp && monstersProp.map((monster: any) => {
@@ -24,7 +15,6 @@ class CardList extends Component<MyProps, MyState> {
                 )}
             </div>
         )
-    }
 }
 
 export default CardList

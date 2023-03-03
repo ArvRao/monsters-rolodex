@@ -1,4 +1,3 @@
-import { Component, ReactNode } from "react"
 import './search-box.styles.css'
 
 interface MyProps {
@@ -7,14 +6,12 @@ interface MyProps {
     className: string
 }
 
-class SearchBox extends Component<MyProps, {}> {
-    render(): ReactNode {
+export const SearchBox = ({onChangeHandler,placeHolder,className}: MyProps) => {
         return (
             <div>
-            <input className={`search-box ${this.props.className}`} type="search" onChange={this.props.onChangeHandler} placeholder={this.props.placeHolder}/>
+            <input className={`search-box ${className}`} type="search" onChange={onChangeHandler} placeholder={placeHolder}/>
             </div>
         )
     }
-}
 
 export default SearchBox
